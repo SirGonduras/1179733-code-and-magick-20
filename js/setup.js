@@ -4,7 +4,10 @@ var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORES = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYE_COLORES = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLORES = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARD_NUMBER = 4;
+var MIN_NAME_LENGTH = 2;
+var MAX_NAME_LENGTH = 25;
 
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -35,10 +38,9 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+var setup = document.querySelector('.setup');
 
-var similarListElement = userDialog.querySelector('.setup-similar-list');
+var similarListElement = setup.querySelector('.setup-similar-list');
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
@@ -61,4 +63,94 @@ wizards.forEach(function (item) {
 
 similarListElement.appendChild(fragment);
 
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+setup.querySelector('.setup-similar').classList.remove('hidden');
+
+
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+var setupUserName = setup.querySelector('.setup-user-name');
+
+var setupWizard = document.querySelector('.setup-wizard');
+var wizardCoat = setupWizard.querySelector('.wizard-coat');
+var wizardEyes = setupWizard.querySelector('.wizard-eyes');
+var setupFireballWrap = document.querySelector('.setup-fireball-wrap');
+
+var changeColorCoat = function () {
+  wizardCoat.style.fill = COAT_COLORES [getRandomNumber(0, COAT_COLORES.length)];
+};
+
+var changeColorEyes = function () {
+  wizardEyes.style.fill = EYE_COLORES [getRandomNumber(0, EYE_COLORES.length)];
+};
+
+var changeColorFirebal = function () {
+  setupFireballWrap.style.backgroundColor = FIREBALL_COLORES [getRandomNumber(0, FIREBALL_COLORES.length)];
+};
+
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape' && !(setupUserName === document.activeElement)) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+  wizardCoat.addEventListener('click', changeColorCoat);
+  wizardEyes.addEventListener('click', changeColorEyes);
+  setupFireballWrap.addEventListener('click', changeColorFirebal);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+  wizardCoat.removeEventListener('click', changeColorCoat);
+  wizardEyes.removeEventListener('click', changeColorEyes);
+  setupFireballWrap.removeEventListener('click', changeColorFirebal);
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    closePopup();
+  }
+});
+
+
+setupUserName.addEventListener('invalid', function () {
+  if (setupUserName.validity.valueMissing) {
+    setupUserName.setCustomValidity('Обязательное поле');
+  } else {
+    setupUserName.setCustomValidity('');
+  }
+});
+
+setupUserName.addEventListener('input', function () {
+  var valueLength = setupUserName.value.length;
+
+  if (valueLength < MIN_NAME_LENGTH) {
+    setupUserName.setCustomValidity('Ещё ' + (MIN_NAME_LENGTH - valueLength) + ' симв.');
+  } else if (valueLength > MAX_NAME_LENGTH) {
+    setupUserName.setCustomValidity('Удалите лишние ' + (valueLength - MAX_NAME_LENGTH) + ' симв.');
+  } else {
+    setupUserName.setCustomValidity('');
+  }
+});
+
