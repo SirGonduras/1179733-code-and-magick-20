@@ -5,10 +5,14 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
+  var startPopupX = 0;
+  var startPopupY = 0;
   var setup = document.querySelector('.setup');
 
   window.main = {
     setup: setup,
+    startPopupX: startPopupX,
+    startPopupY: startPopupY,
     getRandomNumber: getRandomNumber
   };
 

@@ -37,6 +37,9 @@
   var closePopup = function () {
     window.main.setup.classList.add('hidden');
 
+    window.main.setup.style.left = window.main.startPopupX;
+    window.main.setup.style.top = window.main.startPopupY;
+
     document.removeEventListener('keydown', onPopupEscPress);
     wizardCoat.removeEventListener('click', changeColorCoat);
     wizardEyes.removeEventListener('click', changeColorEyes);
