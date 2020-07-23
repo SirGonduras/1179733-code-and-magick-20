@@ -2,19 +2,19 @@
 (function () {
   var URLSave = 'https://javascript.pages.academy/code-and-magick';
   var URLLoad = 'https://javascript.pages.academy/code-and-magick/data';
-  var TIMEOUT_IN_MS = 10000;
 
   var StatusCode = {
     OK: 200
   };
+  var TIMEOUT_IN_MS = 10000;
 
-  window.load = function (onSuccess, onError) {
+  window.load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === StatusCode.OK) {
-        onSuccess(xhr.response);
+        onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -32,12 +32,12 @@
     xhr.send();
   };
 
-  var save = function (data, onSuccess) {
+  var save = function (data, onLoad) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
+      onLoad(xhr.response);
     });
 
     xhr.open('POST', URLSave);
