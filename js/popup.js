@@ -46,6 +46,13 @@
     setupFireballWrap.removeEventListener('click', changeColorFirebal);
   };
 
+  var submitHandler = function (evt) {
+    window.backend.save(new FormData(form), function () {
+      window.main.setup.classList.add('hidden');
+    });
+    evt.preventDefault();
+  };
+
   // Variables
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = window.main.setup.querySelector('.setup-close');
@@ -55,6 +62,7 @@
   var wizardCoat = setupWizard.querySelector('.wizard-coat');
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
   var setupFireballWrap = document.querySelector('.setup-fireball-wrap');
+  var form = document.querySelector('.setup-wizard-form');
 
   // Events
   setupOpen.addEventListener('click', function () {
@@ -84,6 +92,8 @@
       setupUserName.setCustomValidity('');
     }
   });
+
+  form.addEventListener('submit', submitHandler);
 
   setupUserName.addEventListener('input', function () {
     var valueLength = setupUserName.value.length;
