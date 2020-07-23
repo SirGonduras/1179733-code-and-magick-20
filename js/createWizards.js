@@ -32,9 +32,9 @@
 
   // Code
   similarListElement.appendChild(fragment);
-  var successHandler = function (loadWizard) {
+  var successHandler = function (loadWizards) {
     for (var i = 0; i < WIZARD_NUMBER; i++) {
-      fragment.appendChild(renderWizard(loadWizard[i]));
+      fragment.appendChild(renderWizard(loadWizards[i]));
     }
     similarListElement.appendChild(fragment);
 
