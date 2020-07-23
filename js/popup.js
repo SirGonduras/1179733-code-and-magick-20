@@ -48,7 +48,6 @@
 
   var submitHandler = function (evt) {
     window.backend.save(new FormData(form), function () {
-      console.log('kek');
       window.main.setup.classList.add('hidden');
     });
     evt.preventDefault();
